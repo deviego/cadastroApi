@@ -1,26 +1,40 @@
 const express = require("express");
-const fs = require('fs')
+const fs = require("fs");
 const fileUpload = require("express-fileupload");
-const cors = require('cors')
-const ex = express()
-var path = require('path')
+const cors = require("cors");
+const ex = express();
+var path = require("path");
+
+ex.use(express.json());
+ex.use(
+  fileUpload({
+    useTempFile: true,
+    tempFileDir: path.join(__dirname, "temp"),
+  })
+);
+ex.use(cors());
+
+const clerks = []
 
 
-ex.use(express.json())
-ex.use(fileUpload({
-     useTempFile: true, 
-    tempFileDir: path.join(__dirname, 'temp')
-}
-   
-))
-ex.use(cors())
+ async function create({name, email, date}){
+    const clerk = {name, email, date}
+    clerks.push(clerk)
+    fs.writeFile('./data.json', JSON.stringify(clerk, null, 2), 'utf-8', (err) => console.log(err) )
+  }
 
-ex.get('/form', (req, res) => {
-    res.json([{'form:' : 'teste'}]) 
+
+
+ex.route('/test').post((req, res) => {
+  const data = req.body
+  res.json("ok")
+  create(data)
 })
-ex.post('/add', (req, res) => {
-    res.json([{'form:' : 'recebido'}]) 
-})
 
+ex.route("/add").post((req, response) => {
+  
+  response.json(req.body);
+});
 
-ex.listen(5000, () => console.log('server is running in port 5000'))
+ex.listen(5000, () => console.log("server is running in port 5000"));
+
