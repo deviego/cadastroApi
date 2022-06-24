@@ -20,7 +20,7 @@ function App() {
 
   const Form = async (data:any) => {
     api
-      .post("/add", data)
+      .post("/test", data)
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
@@ -54,14 +54,14 @@ function App() {
             />
           </p>
           <p>data de nascimeto:</p>
-          {/* <p>
+          <p>
             <input
-              type="date"
+              type="text"
               {...register("date")}
               id="barthday"
               name="birthday"
             />
-          </p> */}
+          </p>
           <p>
             <input type="submit" value="Enviar" className="button" />{" "}
           </p>
